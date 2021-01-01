@@ -4,6 +4,11 @@ set -e
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEST_CONFIG=/etc/openvpn/nord.conf
 
+if [[ ! -d $(dirname $DEST_CONFIG) ]]; then
+  echo "Destination directory not found."
+  exit 1
+fi
+
 # you can call the script like LOC=ch nordvpn-best-server.sh or just without any env variables set.
 # if no location environment variable is set, it automatically takes the recommended server
 
@@ -33,7 +38,7 @@ BEST_CONFIG="/etc/openvpn/nord-template.conf"
 if [[ ! -f "$BEST_CONFIG" ]]; then
   echo "No template found, creating one."
   bash -c "$DIR/nordvpn-create-template-conf.sh"
-  cp "$DIR/nord-template.conf" $BEST_CONFIG
+  cp -f "$DIR/nord-template.conf" $BEST_CONFIG
 fi
 
 rm $DEST_CONFIG
