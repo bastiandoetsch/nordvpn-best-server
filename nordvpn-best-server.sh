@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
+# the directory of the script
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEST_CONFIG=/etc/openvpn/nord.conf
 
 # you can call the script like LOC=ch nordvpn-best-server.sh or just without any env variables set.
@@ -27,6 +29,13 @@ echo "Using config: $CONFIG."
 
 # use any nordvpn config as a template
 BEST_CONFIG="/etc/openvpn/nord-template.conf"
+
+if [[ ! -f "$BEST_CONFIG" ]]; then
+  echo "No template found, creating one."
+  bash -c "$DIR/nordvpn-create-template-conf.sh"
+  cp "$DIR/nord-template.conf" $BEST_CONFIG
+fi
+
 rm $DEST_CONFIG
 cat "$BEST_CONFIG" | grep -v "auth-user-pass" | grep -v "remote" >>$DEST_CONFIG
 
