@@ -30,6 +30,6 @@ pushd "$WORK_DIR" || {
 echo "Working... please wait..."
 unzip -q ovpn.zip
 TEMPLATE=$(ls ovpn_udp | cut -f1 -d ' ' | grep de | tail -1)
-cp "./ovpn_udp/$TEMPLATE" "$DIR/nord-template.conf"
+cp -f "./ovpn_udp/$TEMPLATE" "$DIR/nord-template.conf"
 echo "Done."
 popd || exit

@@ -2,6 +2,7 @@
 set -e
 # the directory of the script
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 DEST_CONFIG=/etc/openvpn/nord.conf
 
 if [[ ! -d $(dirname $DEST_CONFIG) ]]; then
@@ -33,12 +34,11 @@ fi
 echo "Using config: $CONFIG."
 
 # use any nordvpn config as a template
-BEST_CONFIG="/etc/openvpn/nord-template.conf"
+BEST_CONFIG="$DIR/nord-template.conf"
 
 if [[ ! -f "$BEST_CONFIG" ]]; then
   echo "No template found, creating one."
   bash -c "$DIR/nordvpn-create-template-conf.sh"
-  cp -f "$DIR/nord-template.conf" $BEST_CONFIG
 fi
 
 rm $DEST_CONFIG
