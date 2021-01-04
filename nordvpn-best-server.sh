@@ -69,3 +69,4 @@ for ip in $IP_LIST; do
     echo "Found $ip in $DEST_CONFIG, skipping"
   fi
 done
+echo "remote-random" >>$DEST_CONFIG
