@@ -58,7 +58,8 @@ echo "Adding numerical IP addresses..."
 echo "Trying to get normal remote VPN endpoint..."
 echo "Detected: $CONFIG"
 echo "Corresponding IPs:"
-IP_LIST=$(dig +short $CONFIG) || exit 0
+IP_LIST=$(dig +short $CONFIG) || exit 1
+echo "# remotes for $CONFIG" >> $DEST_CONFIG
 for ip in $IP_LIST; do
   echo "Found IP $ip"
   if [ "$(grep -c $ip $DEST_CONFIG)" -eq 0 ]; then
@@ -68,7 +69,3 @@ for ip in $IP_LIST; do
     echo "Found $ip in $DEST_CONFIG, skipping"
   fi
 done
-
-# add dns name of config
-echo "remote $CONFIG 1194" >>$DEST_CONFIG
-echo "remote-random" >>$DEST_CONFIG
