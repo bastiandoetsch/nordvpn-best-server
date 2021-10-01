@@ -58,7 +58,8 @@ echo "Adding numerical IP addresses..."
 echo "Trying to get normal remote VPN endpoint..."
 echo "Detected: $CONFIG"
 echo "Corresponding IPs:"
-IP_LIST=$(dig +short $CONFIG) || exit 1
+DNS="9.9.9.9"
+IP_LIST=$(dig @"$DNS" +short $CONFIG) || exit 1
 echo "# remotes for $CONFIG" >> $DEST_CONFIG
 for ip in $IP_LIST; do
   echo "Found IP $ip"
