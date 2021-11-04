@@ -6,6 +6,8 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # the temp directory used, within $DIR
 # omit the -p parameter to create a temporal directory in the default location
 WORK_DIR=$(mktemp -d)
+PROTO=tcp
+
 
 # check if tmp dir was created
 if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
@@ -29,7 +31,7 @@ pushd "$WORK_DIR" || {
 }
 echo "Working... please wait..."
 unzip -q ovpn.zip
-TEMPLATE=$(ls ovpn_udp | cut -f1 -d ' ' | grep de | tail -1)
-cp -f "./ovpn_udp/$TEMPLATE" "$DIR/nord-template.conf"
+TEMPLATE=$(ls ovpn_$PROTO | cut -f1 -d ' ' | grep de | tail -1)
+cp -f "./ovpn_$PROTO/$TEMPLATE" "$DIR/nord-template.conf"
 echo "Done."
 popd || exit

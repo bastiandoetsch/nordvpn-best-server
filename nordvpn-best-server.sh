@@ -24,7 +24,7 @@ CONFIG=$(curl -s "https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_rec
   -H 'Referer: https://nordvpn.com/de/servers/tools/' \
   -H 'X-Requested-With: XMLHttpRequest' | jq -r '.[0].hostname')
 
-DEFAULT=ch250.nordvpn.com
+DEFAULT=de978.nordvpn.com
 
 if [[ "" == "$CONFIG" ]]; then
   echo "No config found, using $DEFAULT"
@@ -35,6 +35,7 @@ echo "Using config: $CONFIG."
 
 # use any nordvpn config as a template
 BEST_CONFIG="$DIR/nord-template.conf"
+PORT=$(cat /etc/openvpn/nordvpn-best-server/nord-template.conf | grep remote | grep -v random | cut -f3 -d " " |head -1)
 
 if [[ ! -f "$BEST_CONFIG" ]]; then
   echo "No template found, creating one."
@@ -64,7 +65,7 @@ echo "# remotes for $CONFIG" >> $DEST_CONFIG
 for ip in $IP_LIST; do
   echo "Found IP $ip"
   if [ "$(grep -c $ip $DEST_CONFIG)" -eq 0 ]; then
-    echo "remote $ip 1194" >>$DEST_CONFIG
+    echo "remote $ip $PORT" >>$DEST_CONFIG
     echo "Added $ip to $DEST_CONFIG"
   else
     echo "Found $ip in $DEST_CONFIG, skipping"
